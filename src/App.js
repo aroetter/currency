@@ -25,32 +25,13 @@ const currencies = [
   { code: 'ZAR', name: 'South African Rand' },
 ];
 
-// Header component
-function Header() {
-  return (
-    <header className="header">
-    </header>
-  );
-}
-
-// Tabs component
-function Tabs() {
-  return (
-    <div className="tabs">
-      <button className="tab active">Convert</button>
-      <button className="tab">Send</button>
-      <button className="tab">Charts</button>
-      <button className="tab">Alerts</button>
-    </div>
-  );
-}
-
 // Converter component with currency conversion functionality
 function Converter() {
   const [amount, setAmount] = useState(1);
   const [fromCurrency, setFromCurrency] = useState('USD');
   const [toCurrency, setToCurrency] = useState('EUR');
   const [convertedAmount, setConvertedAmount] = useState(null);
+  const [error, setError] = useState('');
 
   const handleSwap = () => {
     setFromCurrency(toCurrency);
@@ -58,10 +39,22 @@ function Converter() {
     setConvertedAmount(null); // Reset the converted amount when swapping
   };
 
-  const handleConvert = () => {
-    // Placeholder conversion logic, assume 1:1 conversion rate for demonstration
-    const conversionRate = 1; // In a real app, fetch this rate from an API
-    setConvertedAmount((amount * conversionRate).toFixed(2));
+  const handleConvert = async () => {
+    // Fetch exchange rates from the API
+    try {
+      const response = await fetch(`https://v6.exchangerate-api.com/v6/YOUR_API_KEY/latest/${fromCurrency}`);
+      const data = await response.json();
+
+      if (data.result === "success") {
+        const conversionRate = data.conversion_rates[toCurrency];
+        setConvertedAmount((amount * conversionRate).toFixed(2));
+        setError('');
+      } else {
+        setError('Failed to fetch conversion rates.');
+      }
+    } catch (err) {
+      setError('Error fetching conversion rates.');
+    }
   };
 
   return (
@@ -69,7 +62,6 @@ function Converter() {
       <h1>Currency Converter</h1>
       <p>Check live foreign currency exchange rates</p>
       <div className="convert-section">
-
         <div className="input-group">
           <label>Amount</label>
           <input
@@ -78,7 +70,7 @@ function Converter() {
             onChange={(e) => setAmount(e.target.value)}
           />
         </div>
- 
+
         <div className="currency-group">
           <label>From</label>
           <select
@@ -121,13 +113,13 @@ function Converter() {
           <div className="conversion-result">
             {amount} {fromCurrency} = {convertedAmount} {toCurrency}
           </div>
-          <p>Also some text again.</p>
-          </div>
+        </div>
       )}
+
+      {error && <div className="error-message">{error}</div>}
+
       <div className="info">
-        <p>
-          TODO: just a static conversion for now.
-        </p>
+        <p>We use the mid-market rate for our Converter. This is for informational purposes only. You won’t receive this rate when sending money.</p>
       </div>
     </div>
   );
@@ -137,8 +129,8 @@ function Converter() {
 function App() {
   return (
     <div className="App">
-      <Header />
       <div className="content">
+        {/* Uncomment Tabs if you want to use them */}
         {/* <Tabs /> */}
         <Converter />
       </div>
@@ -147,4 +139,3 @@ function App() {
 }
 
 export default App;
-
