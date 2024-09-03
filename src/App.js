@@ -42,7 +42,9 @@ function Converter() {
   const handleConvert = async () => {
     // Fetch exchange rates from the API
     try {
-      const response = await fetch(`https://v6.exchangerate-api.com/v6/YOUR_API_KEY/latest/${fromCurrency}`);
+      const API_KEY = "7bd7016416703b993f6d81f2";
+      const response = await fetch(
+        `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/${fromCurrency}`);
       const data = await response.json();
 
       if (data.result === "success") {
@@ -67,7 +69,10 @@ function Converter() {
           <input
             type="number"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            onChange={(e) => {
+              setAmount(e.target.value);
+              setConvertedAmount(null);
+            }}
           />
         </div>
 
@@ -75,7 +80,10 @@ function Converter() {
           <label>From</label>
           <select
             value={fromCurrency}
-            onChange={(e) => setFromCurrency(e.target.value)}
+            onChange={(e) => {
+              setFromCurrency(e.target.value);
+              setConvertedAmount(null);
+            }}
           >
             {currencies.map((currency) => (
               <option key={currency.code} value={currency.code}>
@@ -93,7 +101,10 @@ function Converter() {
           <label>To</label>
           <select
             value={toCurrency}
-            onChange={(e) => setToCurrency(e.target.value)}
+            onChange={(e) => {
+              setToCurrency(e.target.value);
+              setConvertedAmount(null);
+          }}
           >
             {currencies.map((currency) => (
               <option key={currency.code} value={currency.code}>
@@ -119,7 +130,7 @@ function Converter() {
       {error && <div className="error-message">{error}</div>}
 
       <div className="info">
-        <p>Skeleton API fetching code, work on this.</p>
+        <p>Uses a real API now. Should probably hide the APIKEY (it's the free tier quota limited)</p>
       </div>
     </div>
   );

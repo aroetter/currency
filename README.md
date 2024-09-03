@@ -1,3 +1,11 @@
+# Notes from Alex
+
+Trying to use ChatGPT as much as possible to write code, then I tweak myself as I ramp up on React/JSX.
+
+Unfortunately, since I started the session but uploading a screenshot of how I wanted the app to work, I can't now share my ChatGPT session. Ugh.
+
+App is running [here](https://vercel.com/alex-roetters-projects/currency)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
