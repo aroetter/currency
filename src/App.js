@@ -119,7 +119,7 @@ function Converter() {
       {error && <div className="error-message">{error}</div>}
 
       <div className="info">
-        <p>We use the mid-market rate for our Converter. This is for informational purposes only. You won’t receive this rate when sending money.</p>
+        <p>Skeleton API fetching code, work on this.</p>
       </div>
     </div>
   );
